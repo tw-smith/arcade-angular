@@ -1,10 +1,10 @@
 <app-home-menu></app-home-menu>
 <h3 class="text">Sign Up</h3>
-<form class="form">
-  <input type="text" class="form__item" placeholder="Username">
-  <input type="email" class="form__item" placeholder="Email Address">
-  <input type="password" class="form__item" placeholder="Password">
-  <input type="password" class="form__item" placeholder="Repeat Password">
+<form (ngSubmit)="onSubmit(signupForm)" class="form" #signupForm="ngForm">
+  <input type="text" class="form__item" placeholder="Username" [(ngModel)]="model.username" name="username" #username="ngModel">
+  <input type="email" class="form__item" placeholder="Email Address" [(ngModel)]="model.email" name="email "#email="ngModel">
+  <input type="password" class="form__item" placeholder="Password" [(ngModel)]="model.password" name="password" #password="ngModel">
+  <input type="password" class="form__item" placeholder="Repeat Password" [(ngModel)]="model.repeatPassword" name="repeatPassword" #repeatPassword="ngModel">
   <button type="submit" class="form__item">Sign Up</button>
 </form>
 

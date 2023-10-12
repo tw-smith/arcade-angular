@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  arcadeBackendUrl: 'https://arcade.tw-smith.me',
+  arcadeBackendUrl: 'http://127.0.0.1:8000',
 };
