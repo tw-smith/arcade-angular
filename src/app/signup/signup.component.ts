@@ -14,13 +14,15 @@ export class SignupComponent {
   ) {}
 
   model = new SignupFormEntry('','','', '')
+  errorMsg: string = ''
 
 
 
   onSubmit(form: NgForm): void {
-    this.formSubmitService.submitSignupForm(form.value).subscribe(resp => {
-      console.log(resp)
-    })
+    this.formSubmitService.submitSignupForm(form.value).subscribe(
+      resp => console.log(resp),
+      error => this.errorMsg = error.message,
+    )
   }
 
 

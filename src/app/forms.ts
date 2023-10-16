@@ -21,3 +21,25 @@ export class HighScoreFormEntry {
   ) {
   }
 }
+
+export class LobbyFormEntry {
+  constructor(
+    public name: string,
+  ) {
+  }
+}
+
+export class ForgottenPasswordFormEntry {
+  constructor(
+    public email: string,
+  ) {
+  }
+}
+
+export class ResetPasswordFormEntry {
+  constructor(
+    public newPassword: string,
+    public repeatNewPassword: string
+  ) {
+  }
+}

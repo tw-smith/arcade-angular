@@ -11,6 +11,9 @@ import { HomeMenuComponent } from './home-menu/home-menu.component';
 import { SignupComponent } from './signup/signup.component';
 import { ForgottenPasswordComponent } from './forgotten-password/forgotten-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { LobbyListComponent } from './lobby-list/lobby-list.component';
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { AuthInterceptor } from "./auth.interceptor";
 
 @NgModule({
   declarations: [
@@ -20,7 +23,8 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     HomeMenuComponent,
     SignupComponent,
     ForgottenPasswordComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    LobbyListComponent
   ],
     imports: [
         BrowserModule,
@@ -29,7 +33,9 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
         FormsModule,
         HttpClientModule
     ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
