@@ -14,6 +14,12 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { LobbyListComponent } from './lobby-list/lobby-list.component';
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AuthInterceptor } from "./auth.interceptor";
+import { LobbyDetailComponent } from './lobby-detail/lobby-detail.component';
+import { SocketIoModule, SocketIoConfig } from "ngx-socket-io";
+
+const config: SocketIoConfig = { url: 'http://127.0.0.1:8000',
+                                 options: {rememberUpgrade: false,
+                                           autoConnect: false}}
 
 @NgModule({
   declarations: [
@@ -24,14 +30,16 @@ import { AuthInterceptor } from "./auth.interceptor";
     SignupComponent,
     ForgottenPasswordComponent,
     ResetPasswordComponent,
-    LobbyListComponent
+    LobbyListComponent,
+    LobbyDetailComponent
   ],
     imports: [
         BrowserModule,
         RouterOutlet,
         AppRoutingModule,
         FormsModule,
-        HttpClientModule
+        HttpClientModule,
+        SocketIoModule.forRoot(config)
     ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}

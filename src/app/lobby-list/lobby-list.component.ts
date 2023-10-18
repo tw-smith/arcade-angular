@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {FormSubmitService} from "../form-submit.service";
 import {NgForm} from "@angular/forms";
 import {LobbyFormEntry} from "../forms";
+import { Socket } from "ngx-socket-io";
 
 
 @Component({
@@ -15,7 +16,8 @@ import {LobbyFormEntry} from "../forms";
 export class LobbyListComponent implements OnInit{
   constructor(
     private http: HttpClient,
-    private formSubmitService: FormSubmitService
+    private formSubmitService: FormSubmitService,
+    private socket: Socket
   ) {}
 
   lobbies: any[] = []
@@ -32,6 +34,7 @@ export class LobbyListComponent implements OnInit{
   }
 
   onSubmit(form: NgForm): void {
+    this.socket.emit('testev')
     this.formSubmitService.submitLobbyCreateForm(form.value).subscribe(
       resp => this.lobbies = resp,
       error => this.serverMsg = error.error

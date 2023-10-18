@@ -45,6 +45,10 @@ html {
   color: red;
 }
 
+.text--green {
+  color: lawngreen;
+}
+
 /* Form Styles */
 .form {
   display: flex;

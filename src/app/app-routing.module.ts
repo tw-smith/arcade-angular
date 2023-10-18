@@ -6,6 +6,7 @@ import {SignupComponent} from "./signup/signup.component";
 import {ForgottenPasswordComponent} from "./forgotten-password/forgotten-password.component";
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 import {LobbyListComponent} from "./lobby-list/lobby-list.component";
+import {LobbyDetailComponent} from "./lobby-detail/lobby-detail.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent},
@@ -13,7 +14,8 @@ const routes: Routes = [
   { path: 'auth/signup', component: SignupComponent},
   { path: 'auth/forgottenpassword', component: ForgottenPasswordComponent},
   { path: 'auth/resetpassword', component: ResetPasswordComponent},
-  { path: 'lobbies', component: LobbyListComponent}
+  { path: 'lobbies', component: LobbyListComponent},
+  { path: 'lobby/:public_id', component: LobbyDetailComponent}
 ]
 
 
