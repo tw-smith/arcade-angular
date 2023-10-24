@@ -8,4 +8,5 @@
     <input type="text" class="form__item" placeholder="Lobby name" [(ngModel)]="model.name" name="name" #name="ngModel">
     <button type="submit" class="form__item">Create Lobby</button>
   </form>
+  <button type="submit" class="form__item" (click)="lobbyRefresh()">Refresh</button>
 </div>

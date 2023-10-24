@@ -27,9 +27,7 @@ export class LobbyListComponent implements OnInit{
   // lobbies = [{'name': 'lobby1'}, {'name':'lobby2'}];
 
   ngOnInit() {
-    this.getLobbies().subscribe(
-      resp => this.lobbies = resp
-    )
+    this.lobbyRefresh()
     console.log(this.lobbies)
   }
 
@@ -38,6 +36,12 @@ export class LobbyListComponent implements OnInit{
     this.formSubmitService.submitLobbyCreateForm(form.value).subscribe(
       resp => this.lobbies = resp,
       error => this.serverMsg = error.error
+    )
+  }
+
+  lobbyRefresh() {
+    this.getLobbies().subscribe(
+      resp => this.lobbies = resp
     )
   }
 
