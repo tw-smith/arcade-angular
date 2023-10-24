@@ -33,8 +33,6 @@ export class GameScreenComponent implements OnInit{
     }
   }
 
-
-
   ngOnInit() {
     this.canvas.nativeElement.width = 600;
     this.canvas.nativeElement.height = 600;
@@ -46,6 +44,7 @@ export class GameScreenComponent implements OnInit{
   animateCanvas() {
     const i = setInterval(() => {
     this.snake1.move()
+    this.checkFoodCollision()
     this.renderCanvas()
       if (this.game.gameOverFlag) {
         clearInterval(i)
@@ -62,5 +61,15 @@ export class GameScreenComponent implements OnInit{
     }
   }
 
+  checkFoodCollision() {
+    if (this.snake1.segments[0].x == this.food.x && this.snake1.segments[0].y == this.food.y) {
+      this.food.refresh();
+      this.snake1.addSegment({
+        x: this.snake1.segments[this.snake1.segments.length-1].x,
+        y: this.snake1.segments[this.snake1.segments.length-1].y,
+      })
+      this.game.increase_p1_score(1)
+    }
+  }
 
 }

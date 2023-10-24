@@ -115,7 +115,7 @@ export class Snake {
     }
   }
 
-  private addSegment(position: any) {
+  addSegment(position: any) {
   let newSegment = new GameElement(
     position.x,
     position.y,
