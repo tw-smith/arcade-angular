@@ -6,6 +6,7 @@ import {FormSubmitService} from "../form-submit.service";
 import {NgForm} from "@angular/forms";
 import {LobbyFormEntry} from "../forms";
 import { Socket } from "ngx-socket-io";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -17,7 +18,8 @@ export class LobbyListComponent implements OnInit{
   constructor(
     private http: HttpClient,
     private formSubmitService: FormSubmitService,
-    private socket: Socket
+    private socket: Socket,
+    private router: Router
   ) {}
 
   lobbies: any[] = []
@@ -34,7 +36,12 @@ export class LobbyListComponent implements OnInit{
   onSubmit(form: NgForm): void {
     this.socket.emit('testev')
     this.formSubmitService.submitLobbyCreateForm(form.value).subscribe(
-      resp => this.lobbies = resp,
+      resp => {
+        this.lobbies = resp
+        console.log(resp)
+        this.router.navigateByUrl(`lobby/${resp.public_id}`)
+
+    },
       error => this.serverMsg = error.error
     )
   }
