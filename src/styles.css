@@ -45,6 +45,10 @@ html {
   color: red;
 }
 
+.text--black {
+  color: black;
+}
+
 .text--green {
   color: lawngreen;
 }

@@ -3,9 +3,7 @@
   <ul class="text">
     <li *ngFor="let player of players" [ngClass]="player.is_ready ? 'text--green' : 'text--red'">player: {{player.username}}</li>
   </ul>
-
   <button type="submit" class="form__item" (click)="playerReady()">Ready</button>
   <button type="submit" class="form__item" [disabled]="!checkLobbyReady()">Start Game</button>
   <button type="submit" class="form__item" (click)="leaveLobby()" routerLink="../../lobbies">Leave Lobby</button>
-
 </div>

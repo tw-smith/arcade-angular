@@ -16,6 +16,7 @@ import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AuthInterceptor } from "./auth.interceptor";
 import { LobbyDetailComponent } from './lobby-detail/lobby-detail.component';
 import { SocketIoModule, SocketIoConfig } from "ngx-socket-io";
+import { GameScreenComponent } from './game-screen/game-screen.component';
 
 const config: SocketIoConfig = { url: 'http://127.0.0.1:8000',
                                  options: {rememberUpgrade: false,
@@ -31,7 +32,8 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8000',
     ForgottenPasswordComponent,
     ResetPasswordComponent,
     LobbyListComponent,
-    LobbyDetailComponent
+    LobbyDetailComponent,
+    GameScreenComponent
   ],
     imports: [
         BrowserModule,

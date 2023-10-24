@@ -7,6 +7,7 @@ import {ForgottenPasswordComponent} from "./forgotten-password/forgotten-passwor
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 import {LobbyListComponent} from "./lobby-list/lobby-list.component";
 import {LobbyDetailComponent} from "./lobby-detail/lobby-detail.component";
+import {GameScreenComponent} from "./game-screen/game-screen.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent},
@@ -15,7 +16,9 @@ const routes: Routes = [
   { path: 'auth/forgottenpassword', component: ForgottenPasswordComponent},
   { path: 'auth/resetpassword', component: ResetPasswordComponent},
   { path: 'lobbies', component: LobbyListComponent},
-  { path: 'lobby/:public_id', component: LobbyDetailComponent}
+  { path: 'lobby/:public_id', component: LobbyDetailComponent},
+  { path: 'play/:public_id', component: GameScreenComponent},
+  { path: 'playtest', component: GameScreenComponent}
 ]
 
 
