@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, ViewChild} from '@angular/core';
 import { OnInit } from "@angular/core";
 import { Snake, Food, GameParameters } from "../game-components";
 
@@ -10,14 +10,28 @@ import { Snake, Food, GameParameters } from "../game-components";
 export class GameScreenComponent implements OnInit{
   @ViewChild('canvas', {static: true})
   canvas!: ElementRef<HTMLCanvasElement>;
-
   private ctx!: CanvasRenderingContext2D
-
-
-  //ctx: CanvasRenderingContext2D = this.canvas.getContext('2d')!;
   food: Food = new Food()
   game: GameParameters = new GameParameters(3, 1)
   snake1: Snake = new Snake('host', this.game)
+
+  @HostListener('document:keypress', ['$event'])
+  handleKeyPress(event: KeyboardEvent) {
+    switch (event.key) {
+      case 'a':
+        this.snake1.changeDirection('left')
+        break
+      case 'w':
+        this.snake1.changeDirection('up')
+        break
+      case 'd':
+        this.snake1.changeDirection('right')
+        break
+      case 's':
+        this.snake1.changeDirection('down')
+        break
+    }
+  }
 
 
 
@@ -30,13 +44,13 @@ export class GameScreenComponent implements OnInit{
   }
 
   animateCanvas() {
-      const i = setInterval(() => {
-      this.snake1.move()
-      this.renderCanvas()
-        if (this.game.gameOverFlag) {
-          clearInterval(i)
-        }
-    }, 200)
+    const i = setInterval(() => {
+    this.snake1.move()
+    this.renderCanvas()
+      if (this.game.gameOverFlag) {
+        clearInterval(i)
+      }
+  }, 200)
   }
 
 
