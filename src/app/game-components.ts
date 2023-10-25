@@ -108,20 +108,20 @@ export class Snake {
         this.addSegment(bodySegment)
       })
     } else {
-      this.SNAKE_COLOUR = 'blue'
+      this.SNAKE_COLOUR = 'white'
       CLIENT_STARTING_POSITIONS.forEach((bodySegment: any) => {
         this.addSegment(bodySegment)
       })
     }
   }
 
-  addSegment(position: any) {
+  addSegment(position: any, colour: string = this.SNAKE_COLOUR) {
   let newSegment = new GameElement(
     position.x,
     position.y,
     this.SNAKE_SIZE,
     this.SNAKE_SIZE,
-    this.SNAKE_COLOUR
+    colour
     );
   this.segments.push(newSegment)
   }

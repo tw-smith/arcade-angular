@@ -5,12 +5,12 @@
     </div>
     <canvas #canvas class="gameCanvas"></canvas>
     <div class="controls">
-      <button class="text text--black controls__button" (click)="snake1.changeDirection('up')">&#8593;</button>
+      <button class="text text--black controls__button" (click)="home_snake.changeDirection('up')">&#8593;</button>
       <div class="leftrightControls">
-        <button class="text text--black controls__button" (click)="snake1.changeDirection('left')">&#8592;</button>
-        <button class="text text--black controls__button" (click)="snake1.changeDirection('right')">&#8594;</button>
+        <button class="text text--black controls__button" (click)="home_snake.changeDirection('left')">&#8592;</button>
+        <button class="text text--black controls__button" (click)="home_snake.changeDirection('right')">&#8594;</button>
       </div>
-      <button class="text text--black controls__button" (click)="snake1.changeDirection('down')">&#8595;</button>
+      <button class="text text--black controls__button" (click)="home_snake.changeDirection('down')">&#8595;</button>
     </div>
   </div>
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Socket } from "ngx-socket-io";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-lobby-detail',
@@ -20,7 +20,8 @@ import {ActivatedRoute} from "@angular/router";
 export class LobbyDetailComponent implements OnInit{
   constructor(
     private socket: Socket,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
 
@@ -40,6 +41,10 @@ export class LobbyDetailComponent implements OnInit{
       this.players = data
       console.log(data)
     })
+    this.socket.on('start_game', () => {
+      this.router.navigateByUrl(`/play/${this.lobbyPublicId}`, {skipLocationChange: true})
+    })
+
   }
 
   checkLobbyReady(){
@@ -62,6 +67,10 @@ export class LobbyDetailComponent implements OnInit{
   playerReady() {
       this.socket.emit('player_ready_toggle')
     }
+
+  requestGameStart() {
+    this.socket.emit('start_game_request', this.lobbyPublicId)
+  }
 
 
 }
