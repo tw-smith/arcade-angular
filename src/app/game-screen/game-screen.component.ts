@@ -67,7 +67,7 @@ export class GameScreenComponent implements OnInit{
       this.away_snake = new Snake('client', this.game)
       this.socket.emit('set_initial_food', {x: this.food.x, y: this.food.y})
 
-      this.sendGameUpdates()
+      this.sendSnakeUpdates()
       this.renderCanvas()
       this.animateCanvas()
 
@@ -82,25 +82,15 @@ export class GameScreenComponent implements OnInit{
         this.food.x = data.x
         this.food.y = data.y
 
-        this.sendGameUpdates()
+        this.sendSnakeUpdates()
         this.renderCanvas()
         this.animateCanvas()
-
-
-
-
       })
-
-
-
-      
-
-
     })
 
 
 
-    this.socket.on('new_game_parameters', (data: any) => {
+    this.socket.on('new_snake_parameters', (data: any) => {
       this.away_snake.segments = [];
       for (let i=0; i<data.away_snake.length; i++) {
         this.away_snake.addSegment({
@@ -111,6 +101,17 @@ export class GameScreenComponent implements OnInit{
       }
     })
 
+    this.socket.on('new_food_parameters', (data: {x: number, y: number}) => {
+      this.food.x = data.x
+      this.food.y = data.y
+    })
+
+    this.socket.on('new_game_parameters', (data: {p1score: number, p2score: number, gameOver: boolean}) => {
+      this.game.p1Score = data.p1score
+      this.game.p2Score = data.p2score
+      this.game.gameOverFlag = data.gameOver
+    })
+
     // this.sendGameUpdates()
     //
     // this.renderCanvas()
@@ -118,17 +119,40 @@ export class GameScreenComponent implements OnInit{
 
   }
 
-  sendGameUpdates() {
+  sendSnakeUpdates() {
     const gameUpdateLoop = setInterval(() => {
       const packet = {
         'away_snake': this.home_snake.segments
       }
-      this.socket.emit('game_update', packet)
+      this.socket.emit('snake_update', packet)
       if (this.game.gameOverFlag) {
+        this.sendGameParamsUpdate()
         clearInterval(gameUpdateLoop)
       }
     }, 50)
   }
+
+  sendFoodUpdate(x: number, y: number) {
+    const packet = {
+      x: x,
+      y: y
+    }
+    this.socket.emit('food_update', packet)
+  }
+
+  sendGameParamsUpdate() {
+    const packet = {
+      p1score: this.game.p1Score,
+      p2score: this.game.p2Score,
+      gameOver: this.game.gameOverFlag
+    }
+    this.socket.emit('game_params_update', packet)
+  }
+
+
+
+
+
 
   animateCanvas() {
     const i = setInterval(() => {
@@ -136,6 +160,7 @@ export class GameScreenComponent implements OnInit{
     this.checkFoodCollision()
     this.renderCanvas()
       if (this.game.gameOverFlag) {
+        this.sendGameParamsUpdate()
         clearInterval(i)
       }
   }, 200)
@@ -162,6 +187,8 @@ export class GameScreenComponent implements OnInit{
         y: this.home_snake.segments[this.home_snake.segments.length-1].y,
       })
       this.game.increase_p1_score(1)
+      this.sendFoodUpdate(this.food.x, this.food.y)
+      this.sendGameParamsUpdate()
     }
   }
 
