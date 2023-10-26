@@ -36,11 +36,14 @@ export class LobbyDetailComponent implements OnInit{
                                                  'lobby_id': this.lobbyPublicId}
     console.log(this.socket.ioSocket.io.opts)
     this.socket.connect()
-    this.socket.emit('join_lobby_request', this.lobbyPublicId, (response: any) => {
+    this.socket.emit('join_lobby_request', this.lobbyPublicId, (response: string) => {
       if (response == 'Full') {
-        console.log('lobby full')
         this.lobbyFull = true
         this.socket.disconnect()
+      }
+      if (response == 'Not Found') {
+        this.socket.disconnect()
+        this.router.navigateByUrl('/lobbies')
       }
     })
     this.socket.on('lobby_status_update', (data: any) => {
