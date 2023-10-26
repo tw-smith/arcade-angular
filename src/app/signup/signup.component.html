@@ -1,6 +1,6 @@
 <div class="container">
 <app-home-menu></app-home-menu>
-  <h3 class="text text--red">{{this.errorMsg}}</h3>
+  <h3 class="text text--red">{{this.serverMsg}}</h3>
 <h3 class="text">Sign Up</h3>
 <form (ngSubmit)="onSubmit(signupForm)" class="form" #signupForm="ngForm">
   <input type="text" class="form__item" placeholder="Username" [(ngModel)]="model.username" name="username" #username="ngModel">

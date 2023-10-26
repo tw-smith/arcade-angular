@@ -14,14 +14,18 @@ export class SignupComponent {
   ) {}
 
   model = new SignupFormEntry('','','', '')
-  errorMsg: string = ''
+  serverMsg: string = ''
 
 
 
   onSubmit(form: NgForm): void {
     this.formSubmitService.submitSignupForm(form.value).subscribe(
-      resp => console.log(resp),
-      error => this.errorMsg = error.message,
+      resp => {
+        if (resp.status_code == 201) {
+          this.serverMsg = 'Signed up! Check your email for a verification link.'
+        }
+      },
+      error => this.serverMsg = error.message,
     )
   }
 
