@@ -27,6 +27,7 @@ export class LobbyDetailComponent implements OnInit{
 
   players: any[] = []
   lobbyPublicId: string | null = ''
+  lobbyFull: boolean = false
 
   ngOnInit() {
     this.lobbyPublicId = this.route.snapshot.paramMap.get('public_id')
@@ -35,7 +36,13 @@ export class LobbyDetailComponent implements OnInit{
                                                  'lobby_id': this.lobbyPublicId}
     console.log(this.socket.ioSocket.io.opts)
     this.socket.connect()
-    this.socket.emit('join_lobby_request', this.lobbyPublicId)
+    this.socket.emit('join_lobby_request', this.lobbyPublicId, (response: any) => {
+      if (response == 'Full') {
+        console.log('lobby full')
+        this.lobbyFull = true
+        this.socket.disconnect()
+      }
+    })
     this.socket.on('lobby_status_update', (data: any) => {
       console.log('status update')
       this.players = data

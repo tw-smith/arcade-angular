@@ -73,3 +73,17 @@ html {
 .form__item:focus:invalid {
   box-shadow: none;
 }
+
+.modal {
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

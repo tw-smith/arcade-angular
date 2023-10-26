@@ -2,7 +2,7 @@ import {Component, ElementRef, HostListener, ViewChild} from '@angular/core';
 import { OnInit } from "@angular/core";
 import { Snake, Food, GameParameters } from "../game-components";
 import {Socket} from "ngx-socket-io";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-game-screen',
@@ -24,7 +24,8 @@ export class GameScreenComponent implements OnInit{
 
   constructor(
     private socket: Socket,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   lobbyPublicId: string | null = ''
@@ -190,6 +191,11 @@ export class GameScreenComponent implements OnInit{
       this.sendFoodUpdate(this.food.x, this.food.y)
       this.sendGameParamsUpdate()
     }
+  }
+
+  leaveGame() {
+    this.socket.disconnect()
+    this.router.navigateByUrl("/lobbies")
   }
 
 }

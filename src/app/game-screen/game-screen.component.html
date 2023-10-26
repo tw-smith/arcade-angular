@@ -3,6 +3,10 @@
       <h2 class="text">P1: {{game.p1Score}}</h2>
       <h2 class="text">P2: {{game.p2Score}}</h2>
     </div>
+    <div *ngIf="game.gameOverFlag" class="modal">
+      <p class="text text--red">Game Over!</p>
+      <button class="form__item" (click)="leaveGame()">Back</button>
+    </div>
     <canvas #canvas class="gameCanvas"></canvas>
     <div class="controls">
       <button class="text text--black controls__button" (click)="home_snake.changeDirection('up')">&#8593;</button>

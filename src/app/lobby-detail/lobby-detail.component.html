@@ -1,5 +1,9 @@
 <div class="container">
   <app-home-menu></app-home-menu>
+    <div *ngIf="lobbyFull" class="modal">
+      <p class="text text--red">Lobby Full!</p>
+      <button class="form__item" routerLink="../../lobbies">Back</button>
+    </div>
   <ul class="text">
     <li *ngFor="let player of players" [ngClass]="player.is_ready ? 'text--green' : 'text--red'">player: {{player.username}}</li>
   </ul>
