@@ -1,11 +1,14 @@
 <div class="container">
 <app-home-menu></app-home-menu>
+  <h3 class="text text--red">{{this.errorMsg}}</h3>
 <h3 class="text">Log In</h3>
-<form class="form">
-  <input type="text" class="form__item" placeholder="Username">
-  <input type="password" class="form__item" placeholder="Password">
+<form (ngSubmit)="onSubmit(loginForm)" class="form" #loginForm="ngForm">
+  <input type="text" class="form__item" placeholder="Username" [(ngModel)]="model.username" name="username" #username="ngModel">
+  <input type="password" class="form__item" placeholder="Password" [(ngModel)]="model.password" name="password" #password="ngModel">
   <button class="form__item" type="submit">Log In</button>
-  <button class="form__item" type="submit" routerLink="auth/forgottenpassword">Forgotten Password?</button>
+  </form>
+  <form>
+  <button class="form__item" type="submit" routerLink="../forgottenpassword">Forgotten Password?</button>
 </form>
 </div>
 

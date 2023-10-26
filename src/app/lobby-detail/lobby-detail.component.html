@@ -1,0 +1,13 @@
+<div class="container">
+  <app-home-menu></app-home-menu>
+    <div *ngIf="lobbyFull" class="modal">
+      <p class="text text--red">Lobby Full!</p>
+      <button class="form__item" routerLink="../../lobbies">Back</button>
+    </div>
+  <ul class="text">
+    <li *ngFor="let player of players" [ngClass]="player.is_ready ? 'text--green' : 'text--red'">player: {{player.username}}</li>
+  </ul>
+  <button type="submit" class="form__item" (click)="playerReady()">Ready</button>
+  <button type="submit" class="form__item" [disabled]="!checkLobbyReady()" (click)="requestGameStart()">Start Game</button>
+  <button type="submit" class="form__item" (click)="leaveLobby()" routerLink="../../lobbies">Leave Lobby</button>
+</div>

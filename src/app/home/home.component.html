@@ -1,7 +1,8 @@
 <div class="container">
 <app-home-menu></app-home-menu>
 <form class="form">
-  <button class="form__item" type="submit" routerLink="auth/login">Log In</button>
+  <button *ngIf="!loggedIn" class="form__item" type="submit" routerLink="auth/login">Log In</button>
+  <button *ngIf="loggedIn" class="form__item" type="submit" (click)="logout()">Log Out</button>
   <button class="form__item" type="submit" routerLink="auth/signup">Sign Up</button>
 </form>
 </div>
