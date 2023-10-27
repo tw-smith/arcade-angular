@@ -19,7 +19,7 @@ import { SocketIoModule, SocketIoConfig } from "ngx-socket-io";
 import { GameScreenComponent } from './game-screen/game-screen.component';
 import { environment} from "../env/env.prod";
 
-const config: SocketIoConfig = { url: environment.arcadeBackendUrl,
+const config: SocketIoConfig = { url: environment.socketUrl,
                                  options: {rememberUpgrade: false,
                                            autoConnect: false}}
 

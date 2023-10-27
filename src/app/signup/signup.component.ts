@@ -20,8 +20,10 @@ export class SignupComponent {
 
   onSubmit(form: NgForm): void {
     this.formSubmitService.submitSignupForm(form.value).subscribe(
-      resp => {
-        if (resp.status_code == 201) {
+      (resp) => {
+        console.log(resp)
+        if (resp.msg == "User Created") {
+          console.log('in 201 branch')
           this.serverMsg = 'Signed up! Check your email for a verification link.'
         }
       },
