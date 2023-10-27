@@ -46,6 +46,12 @@
               "outputHashing": "all"
             },
             "development": {
+              "fileReplacements": [
+                {
+                  "replace": "src/env/env.prod.ts",
+                  "with": "src/env/env.dev.ts"
+                  }
+              ],
               "buildOptimizer": false,
               "optimization": false,
               "vendorChunk": true,

@@ -9,6 +9,7 @@ import { Socket } from "ngx-socket-io";
 import {Router} from "@angular/router";
 
 
+
 @Component({
   selector: 'app-lobby-list',
   templateUrl: './lobby-list.component.html',
@@ -29,12 +30,14 @@ export class LobbyListComponent implements OnInit{
   // lobbies = [{'name': 'lobby1'}, {'name':'lobby2'}];
 
   ngOnInit() {
+    console.log(environment.arcadeBackendUrl)
     this.lobbyRefresh()
     console.log(this.lobbies)
+
   }
 
   onSubmit(form: NgForm): void {
-    this.socket.emit('testev')
+
     this.formSubmitService.submitLobbyCreateForm(form.value).subscribe(
       resp => {
         this.lobbies = resp

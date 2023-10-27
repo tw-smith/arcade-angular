@@ -17,8 +17,9 @@ import { AuthInterceptor } from "./auth.interceptor";
 import { LobbyDetailComponent } from './lobby-detail/lobby-detail.component';
 import { SocketIoModule, SocketIoConfig } from "ngx-socket-io";
 import { GameScreenComponent } from './game-screen/game-screen.component';
+import { environment} from "../env/env.prod";
 
-const config: SocketIoConfig = { url: 'http://127.0.0.1:8000',
+const config: SocketIoConfig = { url: environment.arcadeBackendUrl,
                                  options: {rememberUpgrade: false,
                                            autoConnect: false}}
 
