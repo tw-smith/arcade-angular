@@ -82,9 +82,9 @@ export class Snake {
   direction: string = 'right';
   SNAKE_COLOUR: string;
   SNAKE_SIZE: number = 20;
-  game: GameParameters;
+  hasCollided: boolean = false;
 
-  constructor(role: string, game: GameParameters) {
+  constructor(role: string) {
     const HOST_STARTING_POSITIONS = [
       {x: 10, y: 10},
       {x: 9, y: 10},
@@ -96,18 +96,19 @@ export class Snake {
       {x: 9, y: 20},
       {x: 8, y: 20},
     ];
-
+    this.hasCollided = false;
     this.segments = [];
-    this.game = game;
     this.nextX = 1;
     this.nextY = 0;
+    this.SNAKE_COLOUR = 'green'
 
     if (role == 'host') {
       this.SNAKE_COLOUR = 'blue'
       HOST_STARTING_POSITIONS.forEach((bodySegment: any) => {
         this.addSegment(bodySegment)
       })
-    } else {
+    }
+    if (role == 'client') {
       this.SNAKE_COLOUR = 'white'
       CLIENT_STARTING_POSITIONS.forEach((bodySegment: any) => {
         this.addSegment(bodySegment)
@@ -115,7 +116,7 @@ export class Snake {
     }
   }
 
-  addSegment(position: any, colour: string = this.SNAKE_COLOUR) {
+  addSegment(position: {x: number, y: number}, colour: string = this.SNAKE_COLOUR) {
   let newSegment = new GameElement(
     position.x,
     position.y,
@@ -165,7 +166,7 @@ export class Snake {
       x: this.segments[0].x + this.nextX,
       y: this.segments[0].y + this.nextY,
     };
-    this.gameOverCheck(newHeadPos);
+    let hasCollided = this.snakeCollisionCheck(newHeadPos)
     this.segments.unshift(
       new GameElement(
         newHeadPos.x,
@@ -175,26 +176,21 @@ export class Snake {
         this.SNAKE_COLOUR
       )
     )
+    return hasCollided
   }
 
-  private gameOverCheck(newHeadPos: {x: number, y: number}) {
+  private snakeCollisionCheck(newHeadPos: {x: number, y: number}) {
     // check if we've hit our own tail
     for (let i = 0; i < this.segments.length; i++) {
       if (newHeadPos.x == this.segments[i].x && newHeadPos.y == this.segments[i].y) {
-        this.game.gameOver()
+        return true
       }
     }
 
     // check if we've hit the edge of the board
-    if (
-      this.segments[0].x >= 30 ||
+    return this.segments[0].x >= 30 ||
       this.segments[0].x <= 0 ||
       this.segments[0].y >= 30 ||
-      this.segments[0].y <= 0
-    ) {
-      this.game.gameOver()
-    }
+      this.segments[0].y <= 0;
   }
-
-
 }

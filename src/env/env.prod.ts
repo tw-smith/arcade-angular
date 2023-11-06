@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
-  arcadeBackendUrl: 'http://127.0.0.1:8000',
-  authServerUrl: 'http://127.0.0.1:7000'
+  arcadeBackendUrl: 'https://arcade2.tw-smith.me/api',
+  socketUrl: 'https://arcade2.tw-smith.me',
+  authServerUrl: 'https://auth.tw-smith.me'
 };

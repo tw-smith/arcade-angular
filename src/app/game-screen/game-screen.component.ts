@@ -16,6 +16,7 @@ export class GameScreenComponent implements OnInit{
   private ctx!: CanvasRenderingContext2D
   food: Food = new Food()
   game: GameParameters = new GameParameters(3, 1)
+  player_role: number = 0
 
 
 
@@ -49,6 +50,7 @@ export class GameScreenComponent implements OnInit{
   }
 
   ngOnInit() {
+    this.game.gameOverFlag = false;
     this.canvas.nativeElement.width = 600;
     this.canvas.nativeElement.height = 600;
     this.ctx = this.canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D
@@ -58,47 +60,24 @@ export class GameScreenComponent implements OnInit{
     this.socket.ioSocket.io.opts.auth = {'token': window.sessionStorage.getItem('access_token')}
     this.socket.ioSocket.io.opts.extraHeaders = {'token': window.sessionStorage.getItem('access_token'),
                                                  'lobby_id': this.lobbyPublicId}
-    console.log(this.socket.ioSocket.io.opts)
     this.socket.connect()
 
     // Set snakes
     this.socket.on('set_p1', () => {
-      console.log('set_p1')
-      this.home_snake = new Snake('host', this.game)
-      this.away_snake = new Snake('client', this.game)
-      this.socket.emit('set_initial_food', {x: this.food.x, y: this.food.y})
-
-      this.sendSnakeUpdates()
-      this.renderCanvas()
-      this.animateCanvas()
-
-
+      this.initGame(1)
     })
 
     this.socket.on('set_p2', () => {
-      console.log('set_p1')
-      this.home_snake = new Snake('client', this.game)
-      this.away_snake = new Snake('host', this.game)
-      this.socket.on('set_initial_food', (data: {x: number, y: number}) => {
-        this.food.x = data.x
-        this.food.y = data.y
-
-        this.sendSnakeUpdates()
-        this.renderCanvas()
-        this.animateCanvas()
-      })
+      this.initGame(2)
     })
-
-
 
     this.socket.on('new_snake_parameters', (data: any) => {
       this.away_snake.segments = [];
       for (let i=0; i<data.away_snake.length; i++) {
-        this.away_snake.addSegment({
-          x: data.away_snake[i].x,
-          y: data.away_snake[i].y,
-          colour: data.away_snake[i].fillColour,
-        })
+        this.away_snake.addSegment(
+          {x: data.away_snake[i].x, y: data.away_snake[i].y},
+           data.away_snake[i].fillColour
+        )
       }
     })
 
@@ -112,13 +91,31 @@ export class GameScreenComponent implements OnInit{
       this.game.p2Score = data.p2score
       this.game.gameOverFlag = data.gameOver
     })
-
-    // this.sendGameUpdates()
-    //
-    // this.renderCanvas()
-    // this.animateCanvas()
-
   }
+
+  initGame(playerNumber: number) {
+    this.player_role = playerNumber;
+    this.game.gameOverFlag = false;
+    //this.home_snake.segments = [];
+    //this.away_snake.segments = [];
+    if (this.player_role == 1) {
+      this.home_snake = new Snake('host')
+      this.away_snake = new Snake('client')
+      this.socket.emit('set_initial_food', {x: this.food.x, y: this.food.y})
+    }
+    if (this.player_role == 2) {
+      this.home_snake = new Snake('client')
+      this.away_snake = new Snake('host')
+      this.socket.on('set_initial_food', (data: {x: number, y: number}) => {
+        this.food.x = data.x
+        this.food.y = data.y
+      })
+    }
+    this.sendSnakeUpdates()
+    this.renderCanvas()
+    this.animateCanvas()
+  }
+
 
   sendSnakeUpdates() {
     const gameUpdateLoop = setInterval(() => {
@@ -150,20 +147,16 @@ export class GameScreenComponent implements OnInit{
     this.socket.emit('game_params_update', packet)
   }
 
-
-
-
-
-
   animateCanvas() {
     const i = setInterval(() => {
-    this.home_snake.move()
-    this.checkFoodCollision()
-    this.renderCanvas()
-      if (this.game.gameOverFlag) {
-        this.sendGameParamsUpdate()
-        clearInterval(i)
-      }
+    if (this.game.gameOverFlag) {
+      this.sendGameParamsUpdate()
+      clearInterval(i)
+    } else {
+      this.game.gameOverFlag = this.home_snake.move()
+      this.checkFoodCollision()
+      this.renderCanvas()
+    }
   }, 200)
   }
 
@@ -187,7 +180,12 @@ export class GameScreenComponent implements OnInit{
         x: this.home_snake.segments[this.home_snake.segments.length-1].x,
         y: this.home_snake.segments[this.home_snake.segments.length-1].y,
       })
-      this.game.increase_p1_score(1)
+      if (this.player_role == 1) {
+        this.game.increase_p1_score(1)
+      }
+      if (this.player_role == 2) {
+        this.game.increase_p2_score(1)
+      }
       this.sendFoodUpdate(this.food.x, this.food.y)
       this.sendGameParamsUpdate()
     }
@@ -195,7 +193,7 @@ export class GameScreenComponent implements OnInit{
 
   leaveGame() {
     this.socket.disconnect()
-    this.router.navigateByUrl("/lobbies")
+    this.router.navigateByUrl("/lobbies", {'skipLocationChange': false, 'replaceUrl': true})
   }
 
 }

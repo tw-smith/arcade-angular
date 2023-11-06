@@ -91,3 +91,8 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+.list {
+  list-style-type: none;
+  padding: 0;
+}

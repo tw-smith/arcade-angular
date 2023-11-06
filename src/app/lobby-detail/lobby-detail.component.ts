@@ -33,7 +33,7 @@ export class LobbyDetailComponent implements OnInit{
     this.lobbyPublicId = this.route.snapshot.paramMap.get('public_id')
     this.socket.ioSocket.io.opts.auth = {'token': window.sessionStorage.getItem('access_token')}
     this.socket.ioSocket.io.opts.extraHeaders = {'token': window.sessionStorage.getItem('access_token'),
-                                                 'lobby_id': this.lobbyPublicId}
+                                                 'Lobby-ID': this.lobbyPublicId}
     console.log(this.socket.ioSocket.io.opts)
     this.socket.connect()
     this.socket.emit('join_lobby_request', this.lobbyPublicId, (response: string) => {

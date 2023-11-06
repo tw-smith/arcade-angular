@@ -1,12 +1,12 @@
 <div class="container">
   <app-home-menu></app-home-menu>
   <h3 class="text text--red">{{this.serverMsg}}</h3>
-  <ul *ngIf="lobbies" class="text text--red">
+  <ul *ngIf="lobbies" class="text text--red list">
     <li *ngFor="let lobby of lobbies" routerLink="../lobby/{{lobby.public_id}}">{{lobby.name}}</li>
   </ul>
   <form (ngSubmit)="onSubmit(lobbyCreateForm)" class="form" #lobbyCreateForm="ngForm">
     <input type="text" class="form__item" placeholder="Lobby name" [(ngModel)]="model.name" name="name" #name="ngModel">
-    <button type="submit" class="form__item">Create Lobby</button>
+    <button type="submit" class="form__item" [disabled]="!model.name">Create Lobby</button>
   </form>
   <button type="submit" class="form__item" (click)="lobbyRefresh()">Refresh</button>
 </div>
