@@ -6,7 +6,7 @@
   </ul>
   <form (ngSubmit)="onSubmit(lobbyCreateForm)" class="form" #lobbyCreateForm="ngForm">
     <input type="text" class="form__item" placeholder="Lobby name" [(ngModel)]="model.name" name="name" #name="ngModel">
-    <button type="submit" class="form__item">Create Lobby</button>
+    <button type="submit" class="form__item" [disabled]="!model.name">Create Lobby</button>
   </form>
   <button type="submit" class="form__item" (click)="lobbyRefresh()">Refresh</button>
 </div>
