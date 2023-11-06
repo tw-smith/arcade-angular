@@ -83,7 +83,6 @@ export class Snake {
   SNAKE_COLOUR: string;
   SNAKE_SIZE: number = 20;
   hasCollided: boolean = false;
-  //game: GameParameters;
 
   constructor(role: string) {
     const HOST_STARTING_POSITIONS = [
@@ -106,18 +105,14 @@ export class Snake {
     if (role == 'host') {
       this.SNAKE_COLOUR = 'blue'
       HOST_STARTING_POSITIONS.forEach((bodySegment: any) => {
-        console.log(bodySegment)
         this.addSegment(bodySegment)
       })
-      console.log(`initial host snake... ${this.segments}`)
     }
     if (role == 'client') {
       this.SNAKE_COLOUR = 'white'
       CLIENT_STARTING_POSITIONS.forEach((bodySegment: any) => {
-        console.log(bodySegment)
         this.addSegment(bodySegment)
       })
-      console.log(`initial client snake... ${this.segments}`)
     }
   }
 
@@ -172,7 +167,6 @@ export class Snake {
       y: this.segments[0].y + this.nextY,
     };
     let hasCollided = this.snakeCollisionCheck(newHeadPos)
-    // this.hasCollided = this.snakeCollisionCheck(newHeadPos)
     this.segments.unshift(
       new GameElement(
         newHeadPos.x,
@@ -182,7 +176,6 @@ export class Snake {
         this.SNAKE_COLOUR
       )
     )
-   // console.log(this.segments)
     return hasCollided
   }
 
@@ -190,23 +183,14 @@ export class Snake {
     // check if we've hit our own tail
     for (let i = 0; i < this.segments.length; i++) {
       if (newHeadPos.x == this.segments[i].x && newHeadPos.y == this.segments[i].y) {
-        console.log('TAIL COLLIDE')
         return true
       }
     }
 
     // check if we've hit the edge of the board
-    if (
-      this.segments[0].x >= 30 ||
+    return this.segments[0].x >= 30 ||
       this.segments[0].x <= 0 ||
       this.segments[0].y >= 30 ||
-      this.segments[0].y <= 0
-    ) {
-      console.log('BOARD EXCEED')
-      return true
-    }
-    return false
+      this.segments[0].y <= 0;
   }
-
-
 }

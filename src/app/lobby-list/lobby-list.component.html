@@ -1,7 +1,7 @@
 <div class="container">
   <app-home-menu></app-home-menu>
   <h3 class="text text--red">{{this.serverMsg}}</h3>
-  <ul *ngIf="lobbies" class="text text--red">
+  <ul *ngIf="lobbies" class="text text--red list">
     <li *ngFor="let lobby of lobbies" routerLink="../lobby/{{lobby.public_id}}">{{lobby.name}}</li>
   </ul>
   <form (ngSubmit)="onSubmit(lobbyCreateForm)" class="form" #lobbyCreateForm="ngForm">

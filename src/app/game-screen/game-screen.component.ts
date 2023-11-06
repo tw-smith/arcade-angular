@@ -51,7 +51,6 @@ export class GameScreenComponent implements OnInit{
 
   ngOnInit() {
     this.game.gameOverFlag = false;
-    console.log(this.game.gameOverFlag)
     this.canvas.nativeElement.width = 600;
     this.canvas.nativeElement.height = 600;
     this.ctx = this.canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D
@@ -61,21 +60,16 @@ export class GameScreenComponent implements OnInit{
     this.socket.ioSocket.io.opts.auth = {'token': window.sessionStorage.getItem('access_token')}
     this.socket.ioSocket.io.opts.extraHeaders = {'token': window.sessionStorage.getItem('access_token'),
                                                  'lobby_id': this.lobbyPublicId}
-   // console.log(this.socket.ioSocket.io.opts)
     this.socket.connect()
 
     // Set snakes
     this.socket.on('set_p1', () => {
-      console.log('set_p1')
       this.initGame(1)
     })
 
     this.socket.on('set_p2', () => {
-      console.log('set_p2')
       this.initGame(2)
     })
-
-
 
     this.socket.on('new_snake_parameters', (data: any) => {
       this.away_snake.segments = [];
@@ -97,12 +91,6 @@ export class GameScreenComponent implements OnInit{
       this.game.p2Score = data.p2score
       this.game.gameOverFlag = data.gameOver
     })
-
-    // this.sendGameUpdates()
-    //
-    // this.renderCanvas()
-    // this.animateCanvas()
-
   }
 
   initGame(playerNumber: number) {
@@ -159,11 +147,6 @@ export class GameScreenComponent implements OnInit{
     this.socket.emit('game_params_update', packet)
   }
 
-
-
-
-
-
   animateCanvas() {
     const i = setInterval(() => {
     if (this.game.gameOverFlag) {
@@ -182,7 +165,6 @@ export class GameScreenComponent implements OnInit{
     this.ctx.clearRect(0,0, this.ctx.canvas.width, this.ctx.canvas.height)
     this.food.drawElement(this.ctx)
     for (let i=0; i<this.home_snake.segments.length; i++) {
-      console.log(`render home snake x: ${this.home_snake.segments[i].x}`)
       this.home_snake.segments[i].drawElement(this.ctx)
     }
 
