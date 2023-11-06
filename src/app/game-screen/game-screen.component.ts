@@ -61,37 +61,18 @@ export class GameScreenComponent implements OnInit{
     this.socket.ioSocket.io.opts.auth = {'token': window.sessionStorage.getItem('access_token')}
     this.socket.ioSocket.io.opts.extraHeaders = {'token': window.sessionStorage.getItem('access_token'),
                                                  'lobby_id': this.lobbyPublicId}
-    console.log(this.socket.ioSocket.io.opts)
+   // console.log(this.socket.ioSocket.io.opts)
     this.socket.connect()
 
     // Set snakes
     this.socket.on('set_p1', () => {
       console.log('set_p1')
-      this.player_role = 1
-      this.home_snake = new Snake('host', this.game)
-      this.away_snake = new Snake('client', this.game)
-      this.socket.emit('set_initial_food', {x: this.food.x, y: this.food.y})
-
-      this.sendSnakeUpdates()
-      this.renderCanvas()
-      this.animateCanvas()
-
-
+      this.initGame(1)
     })
 
     this.socket.on('set_p2', () => {
       console.log('set_p2')
-      this.player_role = 2
-      this.home_snake = new Snake('client', this.game)
-      this.away_snake = new Snake('host', this.game)
-      this.socket.on('set_initial_food', (data: {x: number, y: number}) => {
-        this.food.x = data.x
-        this.food.y = data.y
-
-        this.sendSnakeUpdates()
-        this.renderCanvas()
-        this.animateCanvas()
-      })
+      this.initGame(2)
     })
 
 
@@ -99,11 +80,10 @@ export class GameScreenComponent implements OnInit{
     this.socket.on('new_snake_parameters', (data: any) => {
       this.away_snake.segments = [];
       for (let i=0; i<data.away_snake.length; i++) {
-        this.away_snake.addSegment({
-          x: data.away_snake[i].x,
-          y: data.away_snake[i].y,
-          colour: data.away_snake[i].fillColour,
-        })
+        this.away_snake.addSegment(
+          {x: data.away_snake[i].x, y: data.away_snake[i].y},
+           data.away_snake[i].fillColour
+        )
       }
     })
 
@@ -124,6 +104,30 @@ export class GameScreenComponent implements OnInit{
     // this.animateCanvas()
 
   }
+
+  initGame(playerNumber: number) {
+    this.player_role = playerNumber;
+    this.game.gameOverFlag = false;
+    //this.home_snake.segments = [];
+    //this.away_snake.segments = [];
+    if (this.player_role == 1) {
+      this.home_snake = new Snake('host')
+      this.away_snake = new Snake('client')
+      this.socket.emit('set_initial_food', {x: this.food.x, y: this.food.y})
+    }
+    if (this.player_role == 2) {
+      this.home_snake = new Snake('client')
+      this.away_snake = new Snake('host')
+      this.socket.on('set_initial_food', (data: {x: number, y: number}) => {
+        this.food.x = data.x
+        this.food.y = data.y
+      })
+    }
+    this.sendSnakeUpdates()
+    this.renderCanvas()
+    this.animateCanvas()
+  }
+
 
   sendSnakeUpdates() {
     const gameUpdateLoop = setInterval(() => {
@@ -162,13 +166,14 @@ export class GameScreenComponent implements OnInit{
 
   animateCanvas() {
     const i = setInterval(() => {
-    this.home_snake.move()
-    this.checkFoodCollision()
-    this.renderCanvas()
-      if (this.game.gameOverFlag) {
-        this.sendGameParamsUpdate()
-        clearInterval(i)
-      }
+    if (this.game.gameOverFlag) {
+      this.sendGameParamsUpdate()
+      clearInterval(i)
+    } else {
+      this.game.gameOverFlag = this.home_snake.move()
+      this.checkFoodCollision()
+      this.renderCanvas()
+    }
   }, 200)
   }
 
@@ -177,6 +182,7 @@ export class GameScreenComponent implements OnInit{
     this.ctx.clearRect(0,0, this.ctx.canvas.width, this.ctx.canvas.height)
     this.food.drawElement(this.ctx)
     for (let i=0; i<this.home_snake.segments.length; i++) {
+      console.log(`render home snake x: ${this.home_snake.segments[i].x}`)
       this.home_snake.segments[i].drawElement(this.ctx)
     }
 
@@ -205,7 +211,7 @@ export class GameScreenComponent implements OnInit{
 
   leaveGame() {
     this.socket.disconnect()
-    this.router.navigateByUrl("/lobbies")
+    this.router.navigateByUrl("/lobbies", {'skipLocationChange': false, 'replaceUrl': true})
   }
 
 }
